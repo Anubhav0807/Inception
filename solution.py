@@ -25,6 +25,8 @@ def reality_check(events: list[str], person:str) -> str:
                     inReality.difference_update(participants)
 
             for p in participants:
+                if dreamDict[p] and dreamDict[p].isLost:
+                    return "Invalid Input."
                 dreamDict[p] = Dream(dreamer, participants, dreamDict[p])
 
         elif "kick" in sentence:
@@ -34,6 +36,8 @@ def reality_check(events: list[str], person:str) -> str:
             for name in nameLst:
                 if name in sentence:
                     if dreamDict[name] is None:
+                        return "Invalid Input."
+                    elif dreamDict[person].isLost:
                         return "Invalid Input."
                     lostInLimbo.update(dreamDict[name].participants)
 
@@ -46,7 +50,6 @@ def reality_check(events: list[str], person:str) -> str:
             # The ones who are remaining in lostInLimbo set actually got lost
             for name in lostInLimbo:
                 dreamDict[name].isLost = True
-                nameLst.remove(name)
 
             # Check if someone got back to reality
             for name in nameLst:
